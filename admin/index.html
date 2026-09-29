@@ -1,0 +1,357 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="robots" content="noindex, nofollow" />
+<title>Registrations — Junior IAS Admin</title>
+<style>
+  :root{
+    --navy:#0E2A5E; --navy-d:#0A1F47; --red:#E0342B; --green:#1E9E52;
+    --ink:#15223C; --muted:#5B6A85; --line:#E2E9F4; --bg:#F4F6FB; --card:#fff;
+  }
+  *{ box-sizing:border-box; margin:0; padding:0; }
+  body{ font-family:'Inter',system-ui,-apple-system,'Segoe UI',sans-serif; background:var(--bg); color:var(--ink); line-height:1.5; }
+  a{ color:var(--navy); }
+  [hidden]{ display:none !important; }
+  .topbar{ background:var(--navy); color:#fff; }
+  .topbar .in{ max-width:1200px; margin:0 auto; padding:.9rem 1.25rem; display:flex; align-items:center; justify-content:space-between; gap:1rem; }
+  .topbar b{ font-weight:700; letter-spacing:-.01em; }
+  .topbar .who{ font-size:.82rem; color:#B9C6E4; display:flex; gap:1rem; align-items:center; }
+  .topbar .who button{ color:#fff; background:none; border:1px solid rgba(255,255,255,.25); padding:.3rem .7rem; border-radius:999px; font-size:.76rem; cursor:pointer; }
+  .wrap{ max-width:1200px; margin:0 auto; padding:1.75rem 1.25rem 4rem; }
+  h1{ font-size:1.4rem; letter-spacing:-.01em; }
+  .sub{ color:var(--muted); font-size:.9rem; margin-top:.2rem; }
+  .cards{ display:grid; grid-template-columns:repeat(auto-fit,minmax(150px,1fr)); gap:1rem; margin:1.5rem 0; }
+  .stat{ background:var(--card); border:1px solid var(--line); border-radius:14px; padding:1.1rem 1.2rem; }
+  .stat b{ display:block; font-size:1.7rem; font-weight:800; color:var(--navy); letter-spacing:-.02em; }
+  .stat span{ font-size:.75rem; text-transform:uppercase; letter-spacing:.08em; color:var(--muted); }
+  .stat.is-red b{ color:var(--red); }
+  .stat.is-green b{ color:var(--green); }
+  .panel{ background:var(--card); border:1px solid var(--line); border-radius:16px; overflow:hidden; }
+  .panel__bar{ display:flex; flex-wrap:wrap; gap:.75rem; align-items:center; padding:1rem 1.2rem; border-bottom:1px solid var(--line); }
+  .panel__bar form{ display:flex; flex-wrap:wrap; gap:.5rem; align-items:center; }
+  input,select,textarea,button{ font:inherit; }
+  .inp{ padding:.55rem .8rem; border:1px solid var(--line); border-radius:9px; background:#fff; font-size:.88rem; }
+  .btn{ padding:.55rem 1rem; border-radius:9px; border:1px solid transparent; font-size:.82rem; font-weight:600; cursor:pointer; text-decoration:none; display:inline-block; }
+  .btn:disabled{ opacity:.6; cursor:wait; }
+  .btn--primary{ background:var(--red); color:#fff; }
+  .btn--ghost{ background:#fff; border-color:var(--line); color:var(--navy); }
+  .btn--navy{ background:var(--navy); color:#fff; }
+  .spacer{ flex:1; }
+  table{ width:100%; border-collapse:collapse; font-size:.88rem; }
+  th,td{ text-align:left; padding:.7rem .9rem; border-bottom:1px solid var(--line); vertical-align:top; }
+  th{ font-size:.72rem; text-transform:uppercase; letter-spacing:.06em; color:var(--muted); background:#FAFBFE; position:sticky; top:0; }
+  tr:hover td{ background:#FBFCFF; }
+  .tbl-scroll{ overflow-x:auto; }
+  .pill{ display:inline-block; padding:.2rem .6rem; border-radius:999px; font-size:.72rem; font-weight:700; text-transform:capitalize; }
+  .pill.new{ background:#E7EEFB; color:var(--navy); }
+  .pill.contacted{ background:#FFF1E6; color:#B4610F; }
+  .pill.enrolled{ background:#E4F5EC; color:#12703E; }
+  .pill.not_interested{ background:#F1F3F7; color:#6B7793; }
+  .muted{ color:var(--muted); }
+  .small{ font-size:.78rem; }
+  .nowrap{ white-space:nowrap; }
+  .pager{ display:flex; gap:.4rem; padding:1rem 1.2rem; align-items:center; flex-wrap:wrap; }
+  .pager button,.pager span{ padding:.4rem .7rem; border:1px solid var(--line); border-radius:8px; background:#fff; font-size:.82rem; }
+  .pager button{ cursor:pointer; color:var(--navy); }
+  .pager .cur{ background:var(--navy); color:#fff; border-color:var(--navy); }
+  .empty{ padding:3rem 1.2rem; text-align:center; color:var(--muted); }
+  .flash{ background:#E4F5EC; color:#12703E; border:1px solid #B9E3C9; padding:.7rem 1rem; border-radius:10px; margin-bottom:1rem; font-size:.88rem; }
+  .flash.err{ background:#FDECEA; color:#B3261E; border-color:#F4C7C3; }
+  details.row-actions summary{ cursor:pointer; color:var(--navy); font-size:.8rem; }
+  details.row-actions form{ margin-top:.5rem; display:flex; flex-direction:column; gap:.4rem; min-width:190px; }
+  .login{ max-width:380px; margin:4vh auto 0; }
+  .login form{ margin-top:1.25rem; padding:1.4rem; display:flex; flex-direction:column; gap:.9rem; }
+  .login label{ font-size:.8rem; font-weight:600; }
+  .login .inp{ width:100%; margin-top:.3rem; }
+  @media (max-width:640px){ .topbar .in{ flex-direction:column; align-items:flex-start; } }
+</style>
+</head>
+<body>
+<div class="topbar">
+  <div class="in">
+    <b>Junior IAS · LEAP — Admin</b>
+    <span class="who" id="who" hidden><span id="whoName"></span> &nbsp;·&nbsp; <button type="button" id="logout">Log out</button></span>
+  </div>
+</div>
+
+<div class="wrap">
+  <!-- Sign in -->
+  <section class="login" id="loginView" hidden>
+    <h1>Admin sign in</h1>
+    <p class="sub">LEAP registrations dashboard</p>
+    <p class="flash err" id="loginErr" style="margin-top:1.25rem" hidden></p>
+    <form class="panel" id="loginForm">
+      <label>Email
+        <input class="inp" type="email" name="email" required autofocus autocomplete="username" />
+      </label>
+      <label>Password
+        <input class="inp" type="password" name="password" required autocomplete="current-password" />
+      </label>
+      <button class="btn btn--primary" type="submit">Sign in</button>
+    </form>
+  </section>
+
+  <!-- Dashboard -->
+  <section id="dashView" hidden>
+    <h1>LEAP Registrations</h1>
+    <p class="sub">Every enquiry submitted on the landing page.</p>
+    <p class="flash" id="flash" style="margin-top:1rem" hidden></p>
+
+    <div class="cards">
+      <div class="stat"><b id="sTotal">–</b><span>Total</span></div>
+      <div class="stat is-red"><b id="sNew">–</b><span>New</span></div>
+      <div class="stat"><b id="sContacted">–</b><span>Contacted</span></div>
+      <div class="stat is-green"><b id="sEnrolled">–</b><span>Enrolled</span></div>
+      <div class="stat"><b id="sToday">–</b><span>Today</span></div>
+      <div class="stat"><b id="sWeek">–</b><span>Last 7 days</span></div>
+    </div>
+
+    <div class="panel">
+      <div class="panel__bar">
+        <form id="filterForm">
+          <input class="inp" type="search" name="q" placeholder="Search name, mobile, city…" />
+          <select class="inp" name="status">
+            <option value="">All statuses</option>
+            <option value="new">New</option>
+            <option value="contacted">Contacted</option>
+            <option value="enrolled">Enrolled</option>
+            <option value="not_interested">Not interested</option>
+          </select>
+          <button class="btn btn--navy" type="submit">Filter</button>
+          <button class="btn btn--ghost" type="button" id="clearBtn" hidden>Clear</button>
+        </form>
+        <span class="spacer"></span>
+        <button class="btn btn--ghost" type="button" id="exportBtn">⬇ Export CSV</button>
+      </div>
+
+      <div class="tbl-scroll">
+        <table>
+          <thead>
+            <tr>
+              <th class="nowrap">When</th><th>Parent</th><th>Child</th><th>Class</th>
+              <th>Mobile / WhatsApp</th><th>City</th><th>Source</th><th>Status</th><th></th>
+            </tr>
+          </thead>
+          <tbody id="rows"><tr><td colspan="9"><div class="empty">Loading…</div></td></tr></tbody>
+        </table>
+      </div>
+      <div class="pager" id="pager" hidden></div>
+    </div>
+  </section>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+(function () {
+  'use strict';
+  var SUPABASE_URL = 'https://xtrqjkuydrjbgotrrann.supabase.co';
+  var SUPABASE_KEY = 'sb_publishable_5Q61PLjd1b9ytB-9WeEapw_iijMFVMN';
+  var sb = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+  var PER = 25;
+  var STATUSES = ['new', 'contacted', 'enrolled', 'not_interested'];
+  var state = { q: '', status: '', page: 1 };
+  var $ = function (id) { return document.getElementById(id); };
+
+  var esc = function (s) {
+    return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) {
+      return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
+    });
+  };
+  var label = function (s) { s = s.replace('_', ' '); return s.charAt(0).toUpperCase() + s.slice(1); };
+  var fmtDate = function (iso) { return new Date(iso).toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric', timeZone: 'Asia/Kolkata' }); };
+  var fmtTime = function (iso) { return new Date(iso).toLocaleTimeString('en-IN', { hour: 'numeric', minute: '2-digit', timeZone: 'Asia/Kolkata' }); };
+
+  function flash(msg, isErr) {
+    var f = $('flash');
+    f.textContent = msg;
+    f.classList.toggle('err', !!isErr);
+    f.hidden = false;
+    clearTimeout(flash.t);
+    flash.t = setTimeout(function () { f.hidden = true; }, 3500);
+  }
+
+  /* ---------- auth ---------- */
+  async function showFor(session) {
+    if (!session) {
+      $('loginView').hidden = false; $('dashView').hidden = true; $('who').hidden = true;
+      return;
+    }
+    var res = await sb.from('admin_users').select('name').eq('user_id', session.user.id).maybeSingle();
+    if (!res.data) {
+      await sb.auth.signOut();
+      $('loginErr').textContent = 'This account is not an admin.';
+      $('loginErr').hidden = false;
+      return showFor(null);
+    }
+    $('whoName').textContent = res.data.name;
+    $('who').hidden = false; $('loginView').hidden = true; $('dashView').hidden = false;
+    loadStats(); loadRows();
+  }
+
+  $('loginForm').addEventListener('submit', async function (e) {
+    e.preventDefault();
+    var btn = this.querySelector('button'); btn.disabled = true;
+    $('loginErr').hidden = true;
+    var fd = new FormData(this);
+    var r = await sb.auth.signInWithPassword({ email: fd.get('email').trim(), password: fd.get('password') });
+    btn.disabled = false;
+    if (r.error) { $('loginErr').textContent = 'Incorrect email or password.'; $('loginErr').hidden = false; return; }
+    showFor(r.data.session);
+  });
+
+  $('logout').addEventListener('click', async function () { await sb.auth.signOut(); showFor(null); });
+
+  /* ---------- data ---------- */
+  function applyFilters(query) {
+    if (state.status) query = query.eq('status', state.status);
+    if (state.q) {
+      var q = state.q.replace(/[,()%\\]/g, ' ').trim();
+      if (q) {
+        var like = '%' + q + '%';
+        query = query.or(['parent_name', 'child_name', 'mobile', 'whatsapp', 'city', 'email']
+          .map(function (c) { return c + '.ilike.' + like; }).join(','));
+      }
+    }
+    return query;
+  }
+
+  async function count(filter) {
+    var q = sb.from('registrations').select('id', { count: 'exact', head: true });
+    if (filter) q = filter(q);
+    var r = await q;
+    return r.count || 0;
+  }
+
+  async function loadStats() {
+    var startToday = new Date(new Date().toLocaleDateString('en-CA', { timeZone: 'Asia/Kolkata' }) + 'T00:00:00+05:30').toISOString();
+    var weekAgo = new Date(Date.now() - 7 * 86400000).toISOString();
+    var v = await Promise.all([
+      count(),
+      count(function (q) { return q.eq('status', 'new'); }),
+      count(function (q) { return q.eq('status', 'contacted'); }),
+      count(function (q) { return q.eq('status', 'enrolled'); }),
+      count(function (q) { return q.gte('created_at', startToday); }),
+      count(function (q) { return q.gte('created_at', weekAgo); }),
+    ]);
+    ['sTotal', 'sNew', 'sContacted', 'sEnrolled', 'sToday', 'sWeek'].forEach(function (id, i) { $(id).textContent = v[i]; });
+  }
+
+  function mailNote(cs) {
+    if (cs === 'sent' || cs === 'sent_customer') return '<br><span class="muted" style="font-size:.74rem">✉️ confirmed</span>';
+    if (cs === 'failed' || cs === 'sent_admin') return '<br><span style="font-size:.74rem;color:#B3261E">✉️ email failed</span>';
+    if (cs === 'disabled') return '<br><span class="muted" style="font-size:.74rem">✉️ off</span>';
+    return '';
+  }
+
+  function rowHtml(r) {
+    var opts = STATUSES.map(function (s) {
+      return '<option value="' + s + '"' + (r.status === s ? ' selected' : '') + '>' + label(s) + '</option>';
+    }).join('');
+    var dash = '<span class="muted">—</span>';
+    return '<tr>' +
+      '<td class="nowrap muted">' + esc(fmtDate(r.created_at)) + '<br><span class="small">' + esc(fmtTime(r.created_at)) + '</span></td>' +
+      '<td>' + esc(r.parent_name) + (r.email ? '<br><span class="muted" style="font-size:.8rem">' + esc(r.email) + '</span>' : '') + '</td>' +
+      '<td>' + esc(r.child_name) + '</td>' +
+      '<td class="nowrap">' + esc(r.child_class) + '</td>' +
+      '<td class="nowrap"><a href="tel:' + esc(r.mobile) + '">' + esc(r.mobile) + '</a>' +
+        (r.whatsapp && r.whatsapp !== r.mobile ? '<br><span class="muted" style="font-size:.8rem">wa: ' + esc(r.whatsapp) + '</span>' : '') + '</td>' +
+      '<td>' + (esc(r.city) || dash) + '</td>' +
+      '<td>' + (esc(r.source) || dash) + '</td>' +
+      '<td><span class="pill ' + esc(r.status) + '">' + esc(r.status.replace('_', ' ')) + '</span>' + mailNote(r.confirmation_status) +
+        (r.notes ? '<br><span class="muted small">📝 ' + esc(r.notes.length > 60 ? r.notes.slice(0, 59) + '…' : r.notes) + '</span>' : '') + '</td>' +
+      '<td><details class="row-actions"><summary>Edit</summary>' +
+        '<form data-id="' + r.id + '">' +
+          '<select class="inp" name="status">' + opts + '</select>' +
+          '<textarea class="inp" name="notes" rows="2" placeholder="Notes">' + esc(r.notes) + '</textarea>' +
+          '<button class="btn btn--primary" type="submit">Save</button>' +
+        '</form></details></td>' +
+      '</tr>';
+  }
+
+  async function loadRows() {
+    var from = (state.page - 1) * PER;
+    var q = applyFilters(sb.from('registrations').select('*', { count: 'exact' }))
+      .order('created_at', { ascending: false })
+      .range(from, from + PER - 1);
+    var r = await q;
+    var tbody = $('rows');
+    if (r.error) { tbody.innerHTML = '<tr><td colspan="9"><div class="empty">Could not load: ' + esc(r.error.message) + '</div></td></tr>'; return; }
+    tbody.innerHTML = r.data.length ? r.data.map(rowHtml).join('')
+      : '<tr><td colspan="9"><div class="empty">No registrations match this view yet.</div></td></tr>';
+
+    var total = r.count || 0, pages = Math.max(1, Math.ceil(total / PER));
+    var pager = $('pager');
+    pager.hidden = pages <= 1;
+    pager.innerHTML = (state.page > 1 ? '<button type="button" data-p="' + (state.page - 1) + '">‹ Prev</button>' : '') +
+      '<span class="cur">Page ' + state.page + ' of ' + pages + '</span>' +
+      (state.page < pages ? '<button type="button" data-p="' + (state.page + 1) + '">Next ›</button>' : '') +
+      '<span class="muted" style="border:0">' + total + ' total</span>';
+    $('clearBtn').hidden = !(state.q || state.status);
+  }
+
+  $('pager').addEventListener('click', function (e) {
+    var p = e.target.getAttribute('data-p');
+    if (p) { state.page = Number(p); loadRows(); }
+  });
+
+  $('filterForm').addEventListener('submit', function (e) {
+    e.preventDefault();
+    var fd = new FormData(this);
+    state.q = String(fd.get('q') || '').trim(); state.status = fd.get('status') || ''; state.page = 1;
+    loadRows();
+  });
+  $('filterForm').status.addEventListener('change', function () { $('filterForm').requestSubmit(); });
+  $('clearBtn').addEventListener('click', function () {
+    $('filterForm').reset(); state.q = ''; state.status = ''; state.page = 1; loadRows();
+  });
+
+  $('rows').addEventListener('submit', async function (e) {
+    e.preventDefault();
+    var f = e.target, btn = f.querySelector('button');
+    btn.disabled = true;
+    var notes = f.notes.value.trim().slice(0, 2000);
+    var r = await sb.from('registrations')
+      .update({ status: f.status.value, notes: notes || null })
+      .eq('id', Number(f.getAttribute('data-id')));
+    btn.disabled = false;
+    if (r.error) return flash('Could not save: ' + r.error.message, true);
+    flash('Saved.');
+    loadStats(); loadRows();
+  });
+
+  /* ---------- CSV export (current filter, all pages) ---------- */
+  $('exportBtn').addEventListener('click', async function () {
+    var btn = this; btn.disabled = true;
+    var all = [], from = 0, CHUNK = 1000;
+    while (true) {
+      var r = await applyFilters(sb.from('registrations').select('*'))
+        .order('created_at', { ascending: false }).range(from, from + CHUNK - 1);
+      if (r.error) { btn.disabled = false; return flash('Export failed: ' + r.error.message, true); }
+      all = all.concat(r.data);
+      if (r.data.length < CHUNK) break;
+      from += CHUNK;
+    }
+    var cols = ['id', 'created_at', 'parent_name', 'child_name', 'child_class', 'mobile', 'whatsapp', 'email', 'city', 'source', 'consent', 'status', 'notes', 'confirmation_status'];
+    var cell = function (v) {
+      v = v == null ? '' : String(v);
+      if (/^[=+\-@]/.test(v)) v = "'" + v; // guard against spreadsheet formula injection
+      return '"' + v.replace(/"/g, '""') + '"';
+    };
+    var csv = '﻿' + cols.join(',') + '\r\n' + all.map(function (row) {
+      return cols.map(function (c) { return cell(c === 'created_at' ? new Date(row[c]).toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' }) : row[c]); }).join(',');
+    }).join('\r\n');
+    var a = document.createElement('a');
+    a.href = URL.createObjectURL(new Blob([csv], { type: 'text/csv;charset=utf-8' }));
+    a.download = 'leap-registrations-' + new Date().toISOString().slice(0, 10) + '.csv';
+    document.body.appendChild(a); a.click(); a.remove();
+    btn.disabled = false;
+  });
+
+  sb.auth.getSession().then(function (r) { showFor(r.data.session); });
+})();
+</script>
+</body>
+</html>

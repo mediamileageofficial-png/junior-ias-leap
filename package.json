@@ -1,0 +1,10 @@
+{
+  "name": "junior-ias-leap",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Junior IAS · LEAP landing page, registration API and admin dashboard (Vercel + Supabase)",
+  "engines": { "node": ">=20" },
+  "dependencies": {
+    "nodemailer": "^6.9.16"
+  }
+}
